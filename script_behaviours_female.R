@@ -230,10 +230,3 @@ grid.arrange(gg,
 
 dev.off()
 
-N <- colSums(dt2[,-1])
-
-pepe <- tibble(Female, Quivering, Fluttering, N)
-
-hec.1 <- loglm(N~Female*Quivering*Fluttering, data=pepe)
-
-plot(hec.1, main="model: [Hair][Eye][Sex]")
