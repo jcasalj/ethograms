@@ -19,7 +19,7 @@ name_File <-
 # --------------  loading packages   ----------------
 
 extras <-
-  c("tidyverse", "grid", "gridExtra", "gtable", "readxl", "tools", "flextable", "officer")
+  c("tidyverse", "grid", "gridExtra", "gtable", "readxl", "tools", "flextable", "officer", "magick")
 
 if (length(setdiff(extras, rownames(installed.packages()))) > 0) {
   install.packages(setdiff(extras, rownames(installed.packages())))

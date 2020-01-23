@@ -14,12 +14,12 @@ main_Title <-
   c("CS") # Write title between quotation marks
 
 name_File <-
-  c("dest.xlsm") # Write data filename between quotation marks
+  c("dest_cactus.xlsm") # Write data filename between quotation marks
 
 # --------------  loading packages   ----------------
 
 extras <-
-  c("tidyverse", "grid", "gridExtra", "gtable", "readxl", "tools", "flextable", "officer")
+  c("tidyverse", "grid", "gridExtra", "gtable", "readxl", "tools", "flextable", "officer", "magick")
 
 if (length(setdiff(extras, rownames(installed.packages()))) > 0) {
   install.packages(setdiff(extras, rownames(installed.packages())))
@@ -89,7 +89,7 @@ imm_mov <- round(tibble(imm, mov) * 100, 2)
 head(imm_mov, 5)
 
 statistics <-
-  imm_mov %>% summarise_all(funs(mean, ci = sd(.) / sqrt(n()) * 1.95))
+  imm_mov %>% summarise_all(list(mean= ~mean(.), ci = ~sd(.) / sqrt(n()) * 1.95))
 
 statistics <- round(statistics, 2)
 
@@ -105,7 +105,7 @@ QF <- dt3 %>% select(c(4,8)) %>% rowSums(na.rm = TRUE)
 
 Alles <- round(tibble(nQnF, Quiv, Flut, QF) * 100, 2)
 
-statisticsQF <- Alles %>% summarise_all(funs(mean, ci = sd(.) / sqrt(n()) * 1.95))
+statisticsQF <- Alles %>% summarise_all(list(mean= ~mean(.), ci = ~sd(.) / sqrt(n()) * 1.95))
 
 statisticsQF <- round(statisticsQF, 2)
 
@@ -234,12 +234,12 @@ colnames(dt4I) <- c("Quivering", "Fluttering", "Both")
 
 
 dt5M <-
-  dt4M %>% summarise_all(funs(mean, ci = sd(.) / sqrt(n()) * 1.95))
+  dt4M %>% summarise_all(list(mean= ~mean(.), ci = ~sd(.) / sqrt(n()) * 1.95))
 
 dt5M <- format(round(dt5M, digits = 1), nsmall = 1)
 
 dt5I <-
-  dt4I %>% summarise_all(funs(mean, ci = sd(.) / sqrt(n()) * 1.95))
+  dt4I %>% summarise_all(list(mean= ~mean(.), ci = ~sd(.) / sqrt(n()) * 1.95))
 
 dt5I <- format(round(dt5I, digits = 1), nsmall = 1)
 
