@@ -90,7 +90,7 @@ nQui_Qui <- round(tibble(nQui, Qui) * 100, 2)
 head(nQui_Qui , 5)
 
 statistics <-
-  nQui_Qui  %>% summarise_all(funs(mean, ci = sd(.) / sqrt(n()) * 1.95))
+  nQui_Qui  %>% summarise_all(list(mean= ~mean(.), ci = ~sd(.) / sqrt(n()) * 1.95))
 
 statistics <- round(statistics, 2)
 
@@ -106,7 +106,7 @@ QF <- dt3 %>% select(c(4,8)) %>% rowSums(na.rm = TRUE)
 
 Alles <- round(tibble(nQnF, Quiv, Flut, QF) * 100, 2)
 
-statisticsQF <- Alles %>% summarise_all(funs(mean, ci = sd(.) / sqrt(n()) * 1.95))
+statisticsQF <- Alles %>% summarise_all(list(mean= ~mean(.), ci = ~sd(.) / sqrt(n()) * 1.95))
 
 statisticsQF <- round(statisticsQF, 2)
 
