@@ -74,8 +74,6 @@ g <- graph_from_data_frame(select(mutate(filter(summ_data, freq > 0.15), freq=ro
 
 curves <- autocurve.edges2(g)
 
-frequencies = c(0.15)
-
 par(bg = 'black')
 
 plot(g,
