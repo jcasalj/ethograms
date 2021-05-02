@@ -1,5 +1,6 @@
 extras <-
   c("tidyverse", "readxl", "showtext", "igraph")
+
 if (length(setdiff(extras, rownames(installed.packages()))) > 0) {
   install.packages(setdiff(extras, rownames(installed.packages())))
 }
@@ -9,6 +10,10 @@ lapply(extras, require, character.only = TRUE)
 font_add(family = "Arial", regular = "Arial.ttf") ## here is the path to the font to add.
 
 showtext_auto()
+
+frequencies <- c(0.15)
+
+genotype <- c("OrR")
 
 data <- read_excel("or.xlsm")
   
@@ -29,7 +34,7 @@ ggplot(summ_data, aes(x = behaviour, y = followed_by)) +
         panel.grid.minor = element_blank(),
         panel.border = element_blank(), text = element_text(size=20)) +
   scale_size(range=c(2,30),breaks=seq(0.1,1.0, by = 0.2), limits=c(0,1)) +
-  labs(title="Next behaviour OrR", subtitle="Excluding itself") +
+  labs(title= paste("Next behaviour ", genotype), subtitle="Excluding itself") +
   scale_color_discrete(name = "Frequency", labels = c("0.0 - 0.2", "0.2 - 0.4", "0.4 - 0.6", "0.6 - 0.8"))
 
 # https://stackoverflow.com/questions/16875547/using-igraph-how-to-force-curvature-when-arrows-point-in-opposite-directions
@@ -59,12 +64,32 @@ autocurve.edges2 <-function (graph, start = 0.5)
   res
 }
 
-g <- graph_from_data_frame(select(mutate(filter(summ_data, freq > 0.2), freq=round(freq,2)), -3))
+cbp1 <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
+cbp <- tibble(behaviour=1:8, color=cbp1)
+
+summ_data <- inner_join(summ_data, cbp)
+
+g <- graph_from_data_frame(select(mutate(filter(summ_data, freq > 0.15), freq=round(freq,2)), -3))
 
 curves <- autocurve.edges2(g)
 
-plot(g, edge.label=E(g)$freq, edge.loop.angle=-pi/2,
-     vertex.color="yellow", edge.curved=curves, edge.label.color="red", edge.arrow.size=.4, main="OrR (frequencies ≥ 0.2)")
+frequencies = c(0.15)
+
+par(bg = 'black')
+
+plot(g,
+     edge.label=E(g)$freq,
+     edge.loop.angle=-pi/2,
+     edge.label.cex=0.6,
+     vertex.color="gold3",
+     vertex.label.cex=1.2,
+     edge.curved=curves,
+     edge.label.color="white",
+     edge.box.col="red",
+     edge.arrow.size=.4)
+
+title(paste("OrR (frequencies ≥ ", frequencies, " )"), col.main="white")
 
 
 
